@@ -60,6 +60,7 @@ export default function FileManager() {
       )
 
       alert('File uploaded successfully!')
+      setFile(null) // Clear the file input
       fetchFiles()
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
@@ -151,36 +152,80 @@ export default function FileManager() {
   }
 
   return (
-    <div>
-      <h2>Upload File</h2>
-      <form onSubmit={handleUpload}>
-        <input type="file" onChange={handleFileChange} disabled={isUploading} />
-        <button type="submit" disabled={!file || isUploading}>
-          {isUploading ? 'Uploading...' : 'Upload'}
-        </button>
+    <div className="max-w-2xl mx-auto mt-24 p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-semibold mb-6 text-gray-600 text-center">Cloudflare R2 with Next.js: Upload, Download, Delete</h1>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Upload File</h2>
+      <form onSubmit={handleUpload} className="mb-8">
+        <div className="flex items-center space-x-4">
+          <label className="flex-1">
+            <input
+              type="file"
+              onChange={handleFileChange}
+              disabled={isUploading}
+              className="hidden"
+              id="file-upload"
+            />
+            <div className="cursor-pointer bg-blue-50 text-blue-500 rounded-lg px-4 py-2 border border-blue-300 hover:bg-blue-100 transition duration-300">
+              {file ? file.name : 'Choose a file'}
+            </div>
+          </label>
+          <button
+            type="submit"
+            disabled={!file || isUploading}
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isUploading ? 'Uploading...' : 'Upload'}
+          </button>
+        </div>
       </form>
+
       {isUploading && (
-        <div>
-          <progress value={uploadProgress} max="100" />
-          <p>{uploadProgress.toFixed(2)}% uploaded</p>
-          <button onClick={handleCancelUpload}>Cancel Upload</button>
+        <div className="mb-8">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+            <div
+              className="bg-blue-600 h-2.5 rounded-full"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-gray-600">
+              {uploadProgress.toFixed(2)}% uploaded
+            </p>
+            <button
+              onClick={handleCancelUpload}
+              className="text-red-500 hover:text-red-600 transition duration-300"
+            >
+              Cancel Upload
+            </button>
+          </div>
         </div>
       )}
 
-      <h2>Files</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Files</h2>
       {files.length === 0 ? (
-        <p>No files found.</p>
+        <p className="text-gray-500 italic">No files found.</p>
       ) : (
-        <ul>
+        <ul className="space-y-4">
           {files.map((file) => (
-            <li key={file.Key}>
-              {file.Key}
-              <button onClick={() => file.Key && handleDownload(file.Key)}>
-                Download
-              </button>
-              <button onClick={() => file.Key && handleDelete(file.Key)}>
-                Delete
-              </button>
+            <li
+              key={file.Key}
+              className="flex items-center justify-between bg-gray-50 p-4 rounded-lg"
+            >
+              <span className="text-gray-700 truncate flex-1">{file.Key}</span>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => file.Key && handleDownload(file.Key)}
+                  className="text-blue-500 hover:text-blue-600 transition duration-300"
+                >
+                  Download
+                </button>
+                <button
+                  onClick={() => file.Key && handleDelete(file.Key)}
+                  className="text-red-500 hover:text-red-600 transition duration-300"
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
