@@ -2,6 +2,12 @@
 
 This is a [Next.js](https://nextjs.org/) project that demonstrates how to integrate Cloudflare R2 for file upload, download, and deletion functionalities. It is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+
+https://github.com/user-attachments/assets/9b5b8922-167c-4519-a49c-5efbc932c999
+
+
+
 ## Table of Contents
 
 - [Installation](#installation)
