@@ -125,3 +125,4 @@ This project uses the following packages:
 ## License
 
 This project is licensed under the MIT License.
+# cloudflare-r2-nextjs
